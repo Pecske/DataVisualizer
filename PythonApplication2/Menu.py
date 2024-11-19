@@ -46,3 +46,23 @@ class Menu:
         self.__print_options(options)
         isLinear : str = self.__get_input_value(options)
         return self.__convert_yes_no_to_bool(isLinear)
+
+    def run_visualization_loop(self, activityService) -> None:
+        while True:
+           
+            print("\033[H\033[3J", end="") # ANSI escape code to clear console
+
+            chosen_category = self.get_chosen_category(activityService.get_activity_names())
+            show_linear = self.is_linear_regression_shown()
+            activityService.showPlot(chosen_category, show_linear)
+
+            # Check if the user wants to continue
+            options: dict[int, str] = {1: "Yes", 2: "No"}
+            print("Would you like to visualize another data point?")
+            self.__print_options(options)
+
+            continue_choice = self.__get_input_value(options)
+
+            if continue_choice == "No":
+                print("Exiting program. Goodbye!")
+                break

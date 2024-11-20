@@ -5,7 +5,7 @@ pd.set_option("display.max_columns",100)
 
 class FileReader:
     delimeter : str = ";"
-    encoding : str = "ISO-8859-1"
+    encoding : str = "cp1252"
 
     def __init__(self,path) -> None:
         self.path : str = path

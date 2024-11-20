@@ -26,6 +26,7 @@
     <Compile Include="FileReader.py" />
     <Compile Include="Menu.py" />
     <Compile Include="DataVisualizer.py" />
+    <Compile Include="TableData.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\" />

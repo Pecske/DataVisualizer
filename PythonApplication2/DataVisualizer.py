@@ -9,13 +9,12 @@ def main():
     path = "src/data/stadat-ido0002-10.1.1.2-hu.csv"
 
     fileReader: FileReader = FileReader(path)
-    dataFrame: DataFrame = fileReader.read_from_csv()
+    df: DataFrame = fileReader.read_from_csv()
 
-    activityService: ActivityService = ActivityService()
-    activities: dict[str, Activity] = activityService.convert_dataframe_to_activities(dataFrame)
+    activity_service: ActivityService = ActivityService(df)
 
-    menu: Menu = Menu()
-    menu.run_visualization_loop(activityService)
+    menu: Menu = Menu(activity_service)
+    menu.run_visualization_loop()
 
 # Main function entry
 if __name__ == "__main__":

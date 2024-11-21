@@ -1,3 +1,4 @@
+import os
 from pandas import DataFrame
 from Activity import Activity
 from ActivityService import ActivityService
@@ -7,7 +8,8 @@ from Menu import Menu
 
 def main():
 
-    path = "src/data/stadat-ido0002-10.1.1.2-hu.csv"
+    path = os.getcwd()+"\\PythonApplication2\\src\\data\\stadat-ido0002-10.1.1.2-hu.csv"
+
 
     fileReader: FileReader = FileReader(path)
     df: DataFrame = fileReader.read_from_csv()

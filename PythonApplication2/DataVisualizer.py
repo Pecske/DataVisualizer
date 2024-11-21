@@ -4,6 +4,7 @@ from ActivityService import ActivityService
 from FileReader import FileReader
 from Menu import Menu
 
+
 def main():
 
     path = "src/data/stadat-ido0002-10.1.1.2-hu.csv"
@@ -15,6 +16,7 @@ def main():
 
     menu: Menu = Menu(activity_service)
     menu.run_visualization_loop()
+
 
 # Main function entry
 if __name__ == "__main__":

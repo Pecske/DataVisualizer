@@ -53,7 +53,7 @@ class ActivityService:
         plt.figure(table_data.name.capitalize())
         plt.title(table_data.name.capitalize())
         plt.tight_layout()
-        plt.ylabel('Fő / Perc')
+        plt.ylabel("Fő / Perc")
         for yValues in table_data.y:
             plt.plot(table_data.x, yValues)
             if table_data.isLinear:

@@ -1,22 +1,22 @@
 import os
 from pandas import DataFrame
-from Activity import Activity
-from ActivityService import ActivityService
 from FileReader import FileReader
 from Menu import Menu
+from PageBuilder import PageBuilder
+from PageName import PageName
 
 
 def main():
 
-    path = os.getcwd()+"\\PythonApplication2\\src\\data\\stadat-ido0002-10.1.1.2-hu.csv"
-
+    path = (
+        os.getcwd() + "\\PythonApplication2\\src\\data\\stadat-ido0002-10.1.1.2-hu.csv"
+    )
 
     fileReader: FileReader = FileReader(path)
     df: DataFrame = fileReader.read_from_csv()
 
-    activity_service: ActivityService = ActivityService(df)
-
-    menu: Menu = Menu(activity_service)
+    activity_page = PageBuilder.build_activity(PageName.activity, df)
+    menu: Menu = Menu(activity_page)
     menu.run_visualization_loop()
 
 

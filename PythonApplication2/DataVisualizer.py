@@ -3,6 +3,7 @@ from pandas import DataFrame
 from FileReader import FileReader
 from Menu import Menu
 from PageBuilder import PageBuilder
+from Page import Page
 from PageName import PageName
 
 
@@ -15,7 +16,9 @@ def main():
     fileReader: FileReader = FileReader(path)
     df: DataFrame = fileReader.read_from_csv()
 
-    activity_page = PageBuilder.build_activity(PageName.activity, df)
+    builder: PageBuilder = PageBuilder()
+    activity_page: Page = builder.build_page(PageName.activity, df)
+
     menu: Menu = Menu(activity_page)
     menu.run_visualization_loop()
 

@@ -2,11 +2,11 @@ from collections.abc import Callable
 from pandas import DataFrame
 from ActivityService import ActivityService
 from ItemName import ItemName
-from Page import Page
-from PageItem import PageItem
+from Section import Section
+from SectionItem import SectionItem
 
 
-class ActivityPage(Page):
+class ActivitySection(Section):
 
     def __init__(self, df: DataFrame) -> None:
         super().__init__()
@@ -75,15 +75,6 @@ class ActivityPage(Page):
                 )
         return result
 
-    def __to_bold(self, options: dict[int, str]) -> dict[int, str]:
-        result: dict[int, str] = dict()
-        for k, v in options.items():
-            result[k] = f"\033[1m{v}\033[0m"
-        return result
-
-    def get_yes_no_options(self) -> dict[int, str]:
-        return {1: "Yes", 2: "No"}
-
     def get_gender_filter_options(self) -> dict[int, str]:
         return {1: "All", 2: "By Gender"}
 
@@ -95,22 +86,22 @@ class ActivityPage(Page):
             index += 1
         return options
 
-    def create_activity_item(self) -> PageItem:
+    def create_activity_item(self) -> SectionItem:
         activity_question: str = (
             "Choose an activity to be shown (press the number associated with it):\nTo exit the program type (q or quit)"
         )
         options: dict[int, str] = self.__create_options_from_names(self.activity_names)
-        return PageItem(activity_question, options, self.get_activity_options)
+        return SectionItem(activity_question, options, self.get_activity_options)
 
-    def create_linear_regression_item(self) -> PageItem:
+    def create_linear_regression_item(self) -> SectionItem:
         linear_regression_question: str = "Do you want linear regression to be shown?"
         options: dict[int, str] = self.get_yes_no_options()
-        return PageItem(linear_regression_question, options, self.__to_bold)
+        return SectionItem(linear_regression_question, options, self.to_bold)
 
-    def create_filter_item(self) -> PageItem:
+    def create_filter_item(self) -> SectionItem:
         filter_question: str = "Apply a filter: "
         options: dict[int, str] = self.get_gender_filter_options()
-        return PageItem(filter_question, options, self.__to_bold)
+        return SectionItem(filter_question, options, self.to_bold)
 
     def proceed(self) -> None:
         activity_answer = self.items[ItemName.activity].get_option_by_index(

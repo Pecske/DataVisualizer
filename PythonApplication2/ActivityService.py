@@ -1,9 +1,7 @@
-﻿from matplotlib import legend
-from pandas import DataFrame
+﻿from pandas import DataFrame
 from Activity import Activity
 import matplotlib.pyplot as plt
 import numpy as np
-
 from TableData import TableData
 
 

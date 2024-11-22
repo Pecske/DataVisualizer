@@ -1,7 +1,7 @@
 from collections.abc import Callable
 
 
-class PageItem:
+class SectionItem:
     def __init__(
         self, question: str, options: dict[int, str], transformer: Callable = None
     ) -> None:

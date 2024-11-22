@@ -1,15 +1,10 @@
-from abc import abstractmethod
-from ItemName import ItemName
-from PageItem import PageItem
+from Section import Section
 
 
 class Page:
+
     def __init__(self) -> None:
-        self.items: dict[ItemName, PageItem] = dict()
+        self.sections: list[Section] = list()
 
-    def add_item(self, item_name: ItemName, item: PageItem) -> None:
-        self.items[item_name] = item
-
-    @abstractmethod
-    def proceed(self) -> None:
-        pass
+    def add_section(self, section: Section) -> None:
+        self.sections.append(section)

@@ -1,13 +1,14 @@
 import collections
 from GenderName import GenderName
+from BaseData import BaseData
 
 
-class Activity:
+class Activity(BaseData):
 
     VALUE_LABEL = "Fő / Perc"
 
-    def __init__(self, name) -> None:
-        self.name: str = name
+    def __init__(self, name: str) -> None:
+        super().__init__(name)
         self.activities: list[Activity] = list()
         self.time_values: dict[str, int] = dict()
 
@@ -34,7 +35,7 @@ class Activity:
     def add_time_value(self, name: str, value: int) -> None:
         self.time_values[name] = value
 
-    def get_value_by_gender(
+    def get_time_values_by_gender(
         self, genders: list[GenderName] = None
     ) -> dict[GenderName, dict[str, int]]:
         result: dict[GenderName, dict[str, int]] = dict()

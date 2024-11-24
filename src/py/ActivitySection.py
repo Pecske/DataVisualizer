@@ -1,3 +1,4 @@
+from typing import Any, Callable
 from pandas import DataFrame
 from ActivityService import ActivityService
 from ItemName import ItemName
@@ -12,7 +13,20 @@ class ActivitySection(Section):
     def __init__(self, df: DataFrame) -> None:
         self.activity_service: ActivityService = ActivityService(df)
         super().__init__()
-        self.filter_map: dict[int, list[GenderName]] = {1: [GenderName.all]}
+        self.gender_answer_map: dict[int, list[GenderName]] = {1: [GenderName.all]}
+
+    def proceed(self) -> None:
+        filters: dict[ItemName, Any] = dict()
+        for k, v in self.items.items():
+            filters[k] = v.user_answer
+        data: TableData = self.activity_service.map_base_data_to_table(filters)
+        self.activity_service.show_plot(data)
+
+    def init_items(self) -> None:
+        super().init_items()
+        self.add_item(ItemName.activity, self.create_activity_item())
+        self.add_item(ItemName.linear, self.create_linear_regression_item())
+        self.add_item(ItemName.gender, self.create_gender_item())
 
     def get_activity_options(self, options: dict[int, str]) -> dict[int, str]:
         result: dict[int, str] = dict()
@@ -81,32 +95,39 @@ class ActivitySection(Section):
         )
         activity_names: list[str] = self.activity_service.get_activity_names()
         options: dict[int, str] = self.__create_options_from_names(activity_names)
-        return SectionItem(activity_question, options, self.get_activity_options)
+        return SectionItem(
+            ItemName.activity,
+            activity_question,
+            options,
+            transformer=self.get_activity_options,
+        )
 
     def create_linear_regression_item(self) -> SectionItem:
         linear_regression_question: str = "Do you want linear regression to be shown?"
         options: dict[int, str] = self.get_yes_no_options()
-        return SectionItem(linear_regression_question, options, self.to_bold)
+        evaluator: Callable = self.evaluate_linear
+        return SectionItem(
+            ItemName.linear,
+            linear_regression_question,
+            options,
+            evaluator=evaluator,
+            transformer=self.to_bold,
+        )
 
-    def create_filter_item(self) -> SectionItem:
-        filter_question: str = "Apply a filter: "
+    def create_gender_item(self) -> SectionItem:
+        filter_question: str = "Apply a gender filter: "
         options: dict[int, str] = self.get_gender_filter_options()
-        return SectionItem(filter_question, options, self.to_bold)
-
-    def proceed(self) -> None:
-        activity_answer = self.items[ItemName.activity].get_option_by_index(
-            self.items[ItemName.activity].user_answer
+        evaluator: Callable = self.evaluate_gender
+        return SectionItem(
+            ItemName.gender,
+            filter_question,
+            options,
+            evaluator=evaluator,
+            transformer=self.to_bold,
         )
-        linear_answer = self.items[ItemName.linear].user_answer == 1
-        filter = self.items[ItemName.filter].user_answer
-        filter_answer = self.filter_map.get(filter)
-        data: TableData = self.activity_service.create_table_data(
-            activity_answer, linear_answer, filter_answer
-        )
-        self.activity_service.show_plot(data)    
 
-    def init_items(self) -> None:
-        super().init_items()
-        self.add_item(ItemName.activity, self.create_activity_item())
-        self.add_item(ItemName.linear, self.create_linear_regression_item())
-        self.add_item(ItemName.filter, self.create_filter_item())
+    def evaluate_linear(self, answer) -> bool:
+        return answer == 1
+
+    def evaluate_gender(self, answer) -> list[GenderName]:
+        return self.gender_answer_map.get(answer)

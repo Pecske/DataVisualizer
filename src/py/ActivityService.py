@@ -16,7 +16,7 @@ class ActivityService:
         coef = np.polyfit(xValues, yValues, 1)
         return np.poly1d(coef)
 
-    def __map_columns_to_ints(self, column_names: list[str]) -> list[int]:
+    def __map_columns_to_dummy_values(self, column_names: list[str]) -> list[int]:
         new_index: int = 0
         column_values: dict[str, int] = dict()
         for name in column_names:
@@ -57,7 +57,7 @@ class ActivityService:
         for label, yValues in table_data.value_data.items():
             plt.plot(table_data.x, yValues, label=label)
             if table_data.isLinear:
-                dummyX: list[int] = self.__map_columns_to_ints(table_data.x)
+                dummyX: list[int] = self.__map_columns_to_dummy_values(table_data.x)
                 poly: np.poly1d = self.__get_linear_regression_values(dummyX, yValues)
                 plt.plot(dummyX, poly(dummyX))
 

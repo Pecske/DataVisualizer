@@ -5,10 +5,13 @@ from SectionItem import SectionItem
 
 class Section:
     def __init__(self) -> None:
-        self.items: dict[ItemName, SectionItem] = dict()
+        self.init_items()
 
     def add_item(self, item_name: ItemName, item: SectionItem) -> None:
         self.items[item_name] = item
+    
+    def init_items(self) -> None:
+        self.items: dict[ItemName, SectionItem] = dict()
 
     @abstractmethod
     def proceed(self) -> None:

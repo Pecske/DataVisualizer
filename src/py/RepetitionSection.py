@@ -18,3 +18,7 @@ class RepetitionSection(Section):
         if repetition_answer:
             print("Exiting program. Goodbye!")
             exit()
+
+    def init_items(self):
+        super().init_items()
+        self.add_item(ItemName.repetition, self.create_repetition_item())

@@ -10,9 +10,8 @@ from TableData import TableData
 class ActivitySection(Section):
 
     def __init__(self, df: DataFrame) -> None:
-        super().__init__()
         self.activity_service: ActivityService = ActivityService(df)
-        self.activity_names: list[str] = self.activity_service.get_activity_names()
+        super().__init__()
         self.filter_map: dict[int, list[GenderName]] = {1: [GenderName.all]}
 
     def get_activity_options(self, options: dict[int, str]) -> dict[int, str]:
@@ -80,7 +79,8 @@ class ActivitySection(Section):
         activity_question: str = (
             "Choose an activity to be shown (press the number associated with it):\nTo exit the program type (q or quit)"
         )
-        options: dict[int, str] = self.__create_options_from_names(self.activity_names)
+        activity_names: list[str] = self.activity_service.get_activity_names()
+        options: dict[int, str] = self.__create_options_from_names(activity_names)
         return SectionItem(activity_question, options, self.get_activity_options)
 
     def create_linear_regression_item(self) -> SectionItem:
@@ -103,4 +103,10 @@ class ActivitySection(Section):
         data: TableData = self.activity_service.create_table_data(
             activity_answer, linear_answer, filter_answer
         )
-        self.activity_service.show_plot(data)
+        self.activity_service.show_plot(data)    
+
+    def init_items(self) -> None:
+        super().init_items()
+        self.add_item(ItemName.activity, self.create_activity_item())
+        self.add_item(ItemName.linear, self.create_linear_regression_item())
+        self.add_item(ItemName.filter, self.create_filter_item())

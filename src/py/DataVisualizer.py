@@ -1,4 +1,3 @@
-import os
 from pandas import DataFrame
 from FileReader import FileReader
 from Menu import Menu

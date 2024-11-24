@@ -1,9 +1,10 @@
-from collections.abc import Callable
 from pandas import DataFrame
 from ActivityService import ActivityService
 from ItemName import ItemName
 from Section import Section
 from SectionItem import SectionItem
+from GenderName import GenderName
+from TableData import TableData
 
 
 class ActivitySection(Section):
@@ -12,18 +13,7 @@ class ActivitySection(Section):
         super().__init__()
         self.activity_service: ActivityService = ActivityService(df)
         self.activity_names: list[str] = self.activity_service.get_activity_names()
-        self.filter_method: dict[int, Callable] = {
-            1: self.activity_service.show_activity,
-            2: self.activity_service.show_activity_plot_by_gender,
-        }
-
-    def apply_transformation(
-        self, options: dict[int, str], transform: Callable
-    ) -> dict[int, str]:
-        result: dict[int, str] = dict()
-        for k, v in options.items():
-            result[k] = transform(v)
-        return result
+        self.filter_map: dict[int, list[GenderName]] = {1: [GenderName.all]}
 
     def get_activity_options(self, options: dict[int, str]) -> dict[int, str]:
         result: dict[int, str] = dict()
@@ -108,6 +98,9 @@ class ActivitySection(Section):
             self.items[ItemName.activity].user_answer
         )
         linear_answer = self.items[ItemName.linear].user_answer == 1
-        filter_answer = self.items[ItemName.filter].user_answer
-        exec_show = self.filter_method.get(filter_answer)
-        exec_show(activity_answer, linear_answer)
+        filter = self.items[ItemName.filter].user_answer
+        filter_answer = self.filter_map.get(filter)
+        data: TableData = self.activity_service.create_table_data(
+            activity_answer, linear_answer, filter_answer
+        )
+        self.activity_service.show_plot(data)

@@ -2,4 +2,4 @@ from enum import Enum
 
 
 class PageName(Enum):
-    activity = (0,)
+    activity = 0

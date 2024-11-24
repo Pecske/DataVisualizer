@@ -3,6 +3,7 @@ from Activity import Activity
 import matplotlib.pyplot as plt
 import numpy as np
 from TableData import TableData
+from GenderName import GenderName
 
 
 class ActivityService:
@@ -33,7 +34,7 @@ class ActivityService:
             new_activity: Activity = Activity(k)
             column_index: int = 1
             for value in v:
-                new_activity.add_sub_group(str(df.columns[column_index]), int(value))
+                new_activity.add_time_value(str(df.columns[column_index]), int(value))
                 column_index = column_index + 1
             if k not in activities:
                 activities[k] = new_activity
@@ -51,47 +52,42 @@ class ActivityService:
         plt.figure(table_data.name.capitalize())
         plt.title(table_data.name.capitalize())
         plt.tight_layout()
-        plt.ylabel("Fő / Perc")
+        plt.ylabel(table_data.value_label)
         plt.style.use("fivethirtyeight")
-        for yValues in table_data.y:
-            plt.plot(table_data.x, yValues)
+        for label, yValues in table_data.value_data.items():
+            plt.plot(table_data.x, yValues, label=label)
             if table_data.isLinear:
                 dummyX: list[int] = self.__map_columns_to_ints(table_data.x)
                 poly: np.poly1d = self.__get_linear_regression_values(dummyX, yValues)
                 plt.plot(dummyX, poly(dummyX))
-        if table_data.legend is not None and len(table_data.legend) > 0:
-            plt.legend(table_data.legend)
+
+        plt.legend()
         plt.show()
 
-    def show_activity(self, activity_name: str, show_linear: bool) -> None:
+    def create_table_data(
+        self, activity_name: str, show_linear: bool, gender_filters: list[GenderName]
+    ) -> TableData:
         if activity_name in self.activities:
             current_activity: Activity = self.activities.get(activity_name)
-            x: list[str] = list(current_activity.time_values.keys())
-            y: list[int] = list(current_activity.time_values.values())
-            yValues: list[list[int]] = list()
-            yValues.append(y)
-            table_data: TableData = TableData(x, yValues, activity_name, show_linear)
-            self.show_plot(table_data)
-
-    def show_activity_plot_by_gender(
-        self, activity_name: str, show_linear: bool
-    ) -> None:
-        if activity_name in self.activities:
-            current_activity: Activity = self.activities.get(activity_name)
-            gender_times: dict[str, dict[str, int]] = (
-                current_activity.get_group_by_gender()
+            genders: dict[GenderName, dict[str, int]] = (
+                current_activity.get_value_by_gender(gender_filters)
             )
             x: list[str] = current_activity.get_times()
-            y: list[list[int]] = list()
-            legend: list[str] = list(gender_times.keys())
-            for time_values in gender_times.values():
-                newY = list()
-                for value in time_values.values():
-                    newY.append(value)
-                y.append(newY)
-
-            table_data: TableData = TableData(x, y, activity_name, show_linear, legend)
-            self.show_plot(table_data)
+            value_data: dict[list[int], str] = dict()
+            for k, v in genders.items():
+                y: list[int] = list()
+                for value in v.values():
+                    y.append(value)
+                if k.value not in value_data:
+                    value_data[k.value] = y
+            table_data: TableData = TableData(
+                x,
+                value_data,
+                activity_name,
+                current_activity.VALUE_LABEL,
+                show_linear,
+            )
+        return table_data
 
     def get_activity_names(self) -> list[str]:
         return list(self.activities.keys())

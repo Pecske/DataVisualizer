@@ -10,23 +10,25 @@ class Activity(BaseData):
     def __init__(self, name: str) -> None:
         super().__init__(name)
         self.activities: list[Activity] = list()
-        self.gender_time: dict[GenderName,dict[str,int]] = dict()
+        self.gender_time: dict[GenderName, dict[str, int]] = dict()
         self.times: list[str] = list()
 
     def add_activity(self, activity) -> None:
         self.activities.append(activity)
 
-    def add_gender_time(self,gender : GenderName, time : str, value : int) -> None:
+    def add_gender_time(self, gender: GenderName, time: str, value: int) -> None:
         if gender not in self.gender_time:
             self.gender_time[gender] = dict()
         self.gender_time[gender][time] = value
-    
-    def filter_time_values_by_gender(self, genders: list[GenderName] = None) -> dict[GenderName,dict[str,int]]:
-        result : dict[GenderName,dict[str,int]] =dict()
+
+    def filter_time_values_by_gender(
+        self, genders: list[GenderName] = None
+    ) -> dict[GenderName, dict[str, int]]:
+        result: dict[GenderName, dict[str, int]] = dict()
         if genders is None or len(genders) == 0:
             return self.gender_time
         else:
-            for k,v in self.gender_time.items():
+            for k, v in self.gender_time.items():
                 if k in genders:
                     result[k] = v
         return result

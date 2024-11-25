@@ -24,13 +24,12 @@ class ActivityService(BaseDataService):
             new_activity: Activity = Activity(k)
             column_index: int = 1
             for value in v:
-                gender_time : str = df.columns[column_index]
-                gender_time_split : list[str] = gender_time.split(" ")
+                gender_time: str = df.columns[column_index]
+                gender_time_split: list[str] = gender_time.split(" ")
                 if len(gender_time_split) == 2:
-                    gender_name : GenderName = self._get_gender(gender_time_split[0])
-                    time : str = gender_time_split[1]
-                    new_activity.add_gender_time(gender_name,time,int(value))                    
-                #new_activity.add_time_value(str(df.columns[column_index]), int(value))
+                    gender_name: GenderName = self._get_gender(gender_time_split[0])
+                    time: str = gender_time_split[1]
+                    new_activity.add_gender_time(gender_name, time, int(value))
                 column_index = column_index + 1
             if k not in activities:
                 activities[k] = new_activity

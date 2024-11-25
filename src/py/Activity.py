@@ -10,57 +10,34 @@ class Activity(BaseData):
     def __init__(self, name: str) -> None:
         super().__init__(name)
         self.activities: list[Activity] = list()
-        self.time_values: dict[str, int] = dict()
-
-    def _get_gender(self, s: str) -> GenderName:
-        for name in GenderName:
-            if name.value == s:
-                return name
-
-    def _map_gender_time_to_dict(
-        self,
-        gender: GenderName,
-        time: str,
-        v: int,
-        result: dict[GenderName, dict[str, int]],
-    ):
-        if gender not in result:
-            result[gender] = {time: v}
-        else:
-            result[gender][time] = v
+        self.gender_time: dict[GenderName,dict[str,int]] = dict()
+        self.times: list[str] = list()
 
     def add_activity(self, activity) -> None:
         self.activities.append(activity)
 
-    def add_time_value(self, name: str, value: int) -> None:
-        self.time_values[name] = value
-
-    def get_time_values_by_gender(
-        self, genders: list[GenderName] = None
-    ) -> dict[GenderName, dict[str, int]]:
-        result: dict[GenderName, dict[str, int]] = dict()
-        for k, v in self.time_values.items():
-            split_line: list[str] = k.split(" ")
-            if len(split_line) == 2:
-                gender: GenderName = self._get_gender(split_line[0])
-                time: str = split_line[1]
-                if genders is not None and len(genders) > 0:
-                    if gender in genders:
-                        self._map_gender_time_to_dict(gender, time, v, result)
-                else:
-                    self._map_gender_time_to_dict(gender, time, v, result)
-
+    def add_gender_time(self,gender : GenderName, time : str, value : int) -> None:
+        if gender not in self.gender_time:
+            self.gender_time[gender] = dict()
+        self.gender_time[gender][time] = value
+    
+    def filter_time_values_by_gender(self, genders: list[GenderName] = None) -> dict[GenderName,dict[str,int]]:
+        result : dict[GenderName,dict[str,int]] =dict()
+        if genders is None or len(genders) == 0:
+            return self.gender_time
+        else:
+            for k,v in self.gender_time.items():
+                if k in genders:
+                    result[k] = v
         return result
 
     def get_times(self) -> list[str]:
         times: dict[int, str] = dict()
-        for k, v in self.time_values.items():
-            split_group: list[str] = k.split(" ")
-            if len(split_group) == 2:
-                gender: str = split_group[0]
-                time: str = split_group[1]
-                time_split: list[str] = time.split("/")
-                key = int(time_split[0])
-                times[key] = time
+        for time_value in self.gender_time.values():
+            for k in time_value.keys():
+                split_time: list[str] = k.split("/")
+                if len(split_time) == 2:
+                    time = int(split_time[0])
+                    times[time] = k
         times = collections.OrderedDict(sorted(times.items()))
         return list(times.values())

@@ -1,4 +1,4 @@
-from Section import Section
+from control.Section import Section
 
 
 class Page:

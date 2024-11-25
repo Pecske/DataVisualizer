@@ -1,6 +1,6 @@
 from collections.abc import Callable
 from typing import Any
-from ItemName import ItemName
+from utils.ItemName import ItemName
 
 
 class SectionItem:

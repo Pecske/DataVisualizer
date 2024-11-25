@@ -1,9 +1,9 @@
 ﻿from pandas import DataFrame
-from Activity import Activity
-from TableData import TableData
-from GenderName import GenderName
-from BaseDataService import BaseDataService
-from ItemName import ItemName
+from data.Activity import Activity
+from data.TableData import TableData
+from utils.GenderName import GenderName
+from service.BaseDataService import BaseDataService
+from utils.ItemName import ItemName
 
 
 class ActivityService(BaseDataService):

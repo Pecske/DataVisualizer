@@ -1,4 +1,4 @@
-﻿from Page import Page
+﻿from control.Page import Page
 
 
 class Menu:

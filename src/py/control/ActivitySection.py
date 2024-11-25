@@ -1,11 +1,11 @@
 from typing import Any, Callable
 from pandas import DataFrame
-from ActivityService import ActivityService
-from ItemName import ItemName
-from Section import Section
-from SectionItem import SectionItem
-from GenderName import GenderName
-from TableData import TableData
+from service.ActivityService import ActivityService
+from utils.ItemName import ItemName
+from control.Section import Section
+from control.SectionItem import SectionItem
+from utils.GenderName import GenderName
+from data.TableData import TableData
 
 
 class ActivitySection(Section):

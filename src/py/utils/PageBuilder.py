@@ -1,10 +1,10 @@
 from pandas import DataFrame
-from Page import Page
-from Section import Section
-from ActivitySection import ActivitySection
-from ItemName import ItemName
-from PageName import PageName
-from RepetitionSection import RepetitionSection
+from control.Page import Page
+from control.Section import Section
+from control.ActivitySection import ActivitySection
+from utils.ItemName import ItemName
+from utils.PageName import PageName
+from control.RepetitionSection import RepetitionSection
 
 
 class PageBuilder:

@@ -1,9 +1,9 @@
 from pandas import DataFrame
-from FileReader import FileReader
-from Menu import Menu
-from PageBuilder import PageBuilder
-from Page import Page
-from PageName import PageName
+from utils.FileReader import FileReader
+from control.Menu import Menu
+from utils.PageBuilder import PageBuilder
+from control.Page import Page
+from utils.PageName import PageName
 
 
 def main():

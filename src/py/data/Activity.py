@@ -1,6 +1,6 @@
 import collections
-from GenderName import GenderName
-from BaseData import BaseData
+from utils.GenderName import GenderName
+from data.BaseData import BaseData
 
 
 class Activity(BaseData):

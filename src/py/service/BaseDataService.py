@@ -1,9 +1,9 @@
 from abc import abstractmethod
 from typing import Any
 from pandas import DataFrame
-from BaseData import BaseData
-from TableData import TableData
-from ItemName import ItemName
+from data.BaseData import BaseData
+from data.TableData import TableData
+from utils.ItemName import ItemName
 import matplotlib.pyplot as plt
 import numpy as np
 

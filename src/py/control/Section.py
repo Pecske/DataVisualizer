@@ -1,8 +1,7 @@
 from abc import abstractmethod
 from typing import Any
-from ItemName import ItemName
-from SectionItem import SectionItem
-from BaseDataService import BaseDataService
+from utils.ItemName import ItemName
+from control.SectionItem import SectionItem
 
 
 class Section:

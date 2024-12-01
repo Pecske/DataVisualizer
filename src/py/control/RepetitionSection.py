@@ -1,7 +1,7 @@
 from typing import Callable
-from Section import Section
-from SectionItem import SectionItem
-from ItemName import ItemName
+from control.Section import Section
+from control.SectionItem import SectionItem
+from utils.ItemName import ItemName
 
 
 class RepetitionSection(Section):

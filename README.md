@@ -15,5 +15,5 @@ DataVisualizer is a program written in python that allows users to display beaut
 You can clone this project using:
 
 ```sh
-git clone https://github.com/Py-xel/INFOAP.git
+git clone https://github.com/Pecske/DataVisualizer.git
 ```
